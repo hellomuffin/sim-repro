@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BEHAVIOR-1K — capability reference</title>
+<style>
+  :root{--bg:#0e1015;--card:#181b22;--ink:#e8eaed;--mut:#98a2b3;--acc:#6ea8fe;--acc2:#7ee787;--acc3:#ffa657;--acc4:#c792ea;--line:#272c37}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  header{padding:64px 24px 36px;text-align:center;background:radial-gradient(1200px 440px at 50% -10%,#221a33,transparent)}
+  header h1{font-size:2.5rem;margin:0 0 10px;letter-spacing:-.5px}
+  header p{color:var(--mut);max-width:860px;margin:8px auto;font-size:1.05rem}
+  .stat{display:inline-flex;gap:22px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+  .stat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 18px}
+  .stat b{font-size:1.45rem;color:var(--acc4)} .stat span{display:block;color:var(--mut);font-size:.8rem}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  nav{position:sticky;top:0;background:rgba(14,16,21,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10}
+  nav .wrap{display:flex;gap:18px;flex-wrap:wrap;padding:12px 24px}
+  nav a{color:var(--mut);font-weight:600;font-size:.93rem} nav a:hover{color:var(--ink);text-decoration:none}
+  section{padding:46px 0;border-top:1px solid var(--line)}
+  h2{font-size:1.8rem;margin:0 0 6px} h3{margin:24px 0 8px}
+  .sub{color:var(--acc4);font-weight:700;font-size:.78rem;letter-spacing:.09em;text-transform:uppercase}
+  .lead{color:var(--mut);max-width:880px}
+  .grid{display:grid;gap:16px;margin-top:18px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}} @media(max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .card video,.card img{width:100%;display:block;background:#000;aspect-ratio:4/3;object-fit:cover}
+  .card .body{padding:11px 14px}.card h4{margin:0 0 5px;font-size:.98rem}.card p{margin:0;color:var(--mut);font-size:.85rem}
+  table{width:100%;border-collapse:collapse;margin-top:16px;font-size:.9rem}
+  th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mut);font-weight:700}
+  code{background:#0b0d11;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.85em;color:#d7c4ff}
+  .pill{display:inline-block;background:#0b0d11;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.78rem;margin:3px 3px 0 0;color:var(--acc2)}
+  .pill.new{color:var(--acc3);border-color:#5a3a1a}
+  .note{background:#15171f;border-left:3px solid var(--acc3);padding:12px 16px;border-radius:6px;color:var(--mut);font-size:.9rem;margin-top:16px}
+  .ok{color:var(--acc2);font-weight:700}
+  footer{padding:38px 24px;text-align:center;color:var(--mut);font-size:.85rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header>
+  <span class="sub">BEHAVIOR-1K · v3.7.2 · built on OmniGibson + NVIDIA Isaac Sim</span>
+  <h1>BEHAVIOR-1K — capability reference</h1>
+  <p>A human-centered embodied-AI benchmark of <b>1,000 everyday household activities</b> simulated with full rigid-body &amp;
+  fluid physics. Unlike symbolic household simulators, BEHAVIOR's agent is a <b>real robot</b> that manipulates objects whose
+  <b>physical and chemical state</b> changes — food gets <i>cooked, sliced, soaked, frozen, burnt</i>; cloth gets <i>folded</i>;
+  surfaces get <i>wiped</i>. We document its interaction set and render the robot's <b>egocentric camera</b>.</p>
+  <div class="stat">
+    <div><b>14</b><span>action primitives</span></div>
+    <div><b>41</b><span>object states</span></div>
+    <div><b>1,018</b><span>BDDL activities</span></div>
+    <div><b>11</b><span>robots</span></div>
+    <div><b>12</b><span>transition rules</span></div>
+    <div><b>15</b><span>scenes</span></div>
+  </div>
+  <p style="margin-top:18px;font-size:.92rem">
+    <a href="tasks.html" style="color:#7ee787;font-weight:700">▸ The multi-step task space</a> &nbsp;·&nbsp;
+    <a href="benchmark.html" style="color:#ffa657;font-weight:700">▸ Benchmark: egocentric episodes</a> &nbsp;·&nbsp;
+    <a href="../virtualhome/" style="color:#c792ea">▸ compare: VirtualHome</a> &nbsp;·&nbsp;
+    <a href="../">← all simulators</a>
+  </p>
+</header>
+
+<nav><div class="wrap">
+  <a href="#why">Why BEHAVIOR</a>
+  <a href="#actions">Action primitives</a>
+  <a href="#states">Object states</a>
+  <a href="#transitions">Transition rules</a>
+  <a href="#robots">Robots</a>
+  <a href="#sensors">Egocentric sensors</a>
+  <a href="#scenes">Scenes &amp; tasks</a>
+  <a href="tasks.html">Task space →</a>
+  <a href="benchmark.html">Benchmark →</a>
+</div></nav>
+
+<!-- egocentric hero -->
+<section id="ego" style="border-top:none"><div class="wrap">
+  <span class="sub">Egocentric robot stream</span>
+  <h2>What the robot sees</h2>
+  <p class="lead">The agent is a mobile manipulator. Every episode is rendered from its <b>onboard head camera</b> — the egocentric
+  RGB stream a policy actually consumes — with full ray-traced lighting, materials, and physically-simulated state changes.</p>
+  <div class="grid g3" id="ego-grid">
+    <div class="card"><video src="assets/task_store.mp4" autoplay muted loop playsinline></video>
+      <div class="body"><h4>Articulated manipulation</h4><p>open a cabinet, place a bottle inside, close it — robot head camera</p></div></div>
+    <div class="card"><video src="assets/act_cut.mp4" autoplay muted loop playsinline></video>
+      <div class="body"><h4>Physically-grounded action</h4><p>grasp a knife and <b>slice</b> an apple — a transition rule spawns slices</p></div></div>
+    <div class="card"><video src="assets/task_relocate.mp4" autoplay muted loop playsinline></video>
+      <div class="body"><h4>Retrieve &amp; relocate</h4><p>pick a bottle from one table, set it on another</p></div></div>
+  </div>
+  <div class="note">All visuals are rendered headless on an 8×H200 cluster directly from the BEHAVIOR-1K v3.7.2 code in this repo.
+  See <a href="benchmark.html">the benchmark episodes</a> for the full first-person rollouts with action scene graphs.</div>
+</div></section>
+
+<!-- WHY -->
+<section id="why"><div class="wrap">
+  <span class="sub">Motivation</span>
+  <h2>Why BEHAVIOR — a much larger interaction space</h2>
+  <p class="lead">Symbolic simulators like VirtualHome expose a small set of atomic actions (grab, put, open, switch). BEHAVIOR's agent
+  performs <b>physically-simulated interactions whose effects are governed by real state machines and transition rules</b>, so the
+  action vocabulary is both larger and <i>grounded</i> — a "cut" actually produces slices, a "soak" actually saturates a sponge.</p>
+  <table>
+    <tr><th>Dimension</th><th>VirtualHome (symbolic)</th><th>BEHAVIOR-1K</th></tr>
+    <tr><th>Agent</th><td>Animated human avatar</td><td><b>Physically-simulated robot</b> (R1, Tiago, Fetch, …)</td></tr>
+    <tr><th>Manipulation</th><td>Scripted grab/put keyframes</td><td>Rigid-body grasp + articulation + fluids/particles</td></tr>
+    <tr><th>Interaction types</th><td>~10 atomic actions</td><td><b>14 semantic primitives</b> over <b>41 object states</b></td></tr>
+    <tr><th>State changes</th><td>open/closed, on/off</td><td>cooked, burnt, frozen, soaked, sliced, folded, filled, on-fire, temperature…</td></tr>
+    <tr><th>Physics/chemistry</th><td>none</td><td><b>12 transition-rule families</b> (washing, slicing, melting, cooking recipes…)</td></tr>
+    <tr><th>Observation</th><td>third-person + scene graph</td><td>egocentric robot camera, 13 vision modalities</td></tr>
+  </table>
+</div></section>
+
+<!-- ACTIONS -->
+<section id="actions"><div class="wrap">
+  <span class="sub">Interaction set · the headline</span>
+  <h2>Action primitives</h2>
+  <p class="lead">OmniGibson ships two semantic action-primitive sets. The <b>Symbolic</b> set (14 primitives) is the full interaction
+  vocabulary; the <b>Starter</b> set (9) is the motion-planned subset used for IK baselines. Each primitive is a time-extended
+  skill that expands into low-level robot control via a sampling-based / cuRobo motion planner.
+  <span style="color:#cdd6e4">Source: <code>omnigibson/action_primitives/symbolic_semantic_action_primitives.py</code></span></p>
+
+  <table>
+    <tr><th>Primitive</th><th>Arity</th><th>What it does</th><th>Set</th></tr>
+    <tr><td><code>GRASP</code></td><td>obj</td><td>Grasp an object into the gripper</td><td>both</td></tr>
+    <tr><td><code>RELEASE</code></td><td>—</td><td>Release the held object (lets it fall; re-grasp to reorient)</td><td>both</td></tr>
+    <tr><td><code>PLACE_ON_TOP</code></td><td>obj</td><td>Place the grasped object on top of another</td><td>both</td></tr>
+    <tr><td><code>PLACE_INSIDE</code></td><td>obj</td><td>Place the grasped object inside another</td><td>both</td></tr>
+    <tr><td><code>OPEN</code></td><td>obj</td><td>Open an articulated object (door, drawer, fridge)</td><td>both</td></tr>
+    <tr><td><code>CLOSE</code></td><td>obj</td><td>Close an articulated object</td><td>both</td></tr>
+    <tr><td><code>TOGGLE_ON</code></td><td>obj</td><td>Turn a device on</td><td>both</td></tr>
+    <tr><td><code>TOGGLE_OFF</code></td><td>obj</td><td>Turn a device off</td><td>both</td></tr>
+    <tr><td><code>NAVIGATE_TO</code></td><td>obj</td><td>Navigate the mobile base to an object</td><td>both</td></tr>
+    <tr><td class="ok"><code>SOAK_UNDER</code></td><td>obj</td><td>Soak the grasped object under a fluid source (e.g. tap)</td><td><span class="pill new">symbolic</span></td></tr>
+    <tr><td class="ok"><code>SOAK_INSIDE</code></td><td>obj</td><td>Soak the grasped object in the fluid inside a container</td><td><span class="pill new">symbolic</span></td></tr>
+    <tr><td class="ok"><code>WIPE</code></td><td>obj</td><td>Wipe a surface/stain with the grasped object</td><td><span class="pill new">symbolic</span></td></tr>
+    <tr><td class="ok"><code>CUT</code></td><td>obj</td><td>Cut (slice or dice) an object with the grasped tool</td><td><span class="pill new">symbolic</span></td></tr>
+    <tr><td class="ok"><code>PLACE_NEAR_HEATING_ELEMENT</code></td><td>obj</td><td>Place the grasped object near a heat source (to cook)</td><td><span class="pill new">symbolic</span></td></tr>
+  </table>
+  <div class="note"><b>The five highlighted primitives</b> — <code>SOAK_UNDER</code>, <code>SOAK_INSIDE</code>, <code>WIPE</code>,
+  <code>CUT</code>, <code>PLACE_NEAR_HEATING_ELEMENT</code> — have <i>no analogue</i> in VirtualHome. They exist because the
+  underlying object states (saturation, sliceability, temperature) and transition rules are physically simulated.</div>
+</div></section>
+
+<!-- STATES -->
+<section id="states"><div class="wrap">
+  <span class="sub">What actions operate on</span>
+  <h2>Object states — 41 of them</h2>
+  <p class="lead">Every interaction is grounded in a typed object-state. BEHAVIOR separates <b>kinematic/relational</b> states
+  (geometry &amp; contacts) from <b>extended</b> states (thermal, chemical, fabric, particle) that ordinary physics engines don't
+  model. <span style="color:#cdd6e4">Source: <code>omnigibson/object_states/</code></span></p>
+  <div class="grid g2">
+    <div class="card"><div class="body"><h4>Kinematic &amp; relational</h4>
+      <p style="margin-top:8px">
+      <span class="pill">OnTop</span><span class="pill">Inside</span><span class="pill">Under</span><span class="pill">NextTo</span>
+      <span class="pill">Touching</span><span class="pill">Open</span><span class="pill">AttachedTo</span>
+      <span class="pill">HorizontalAdjacency</span><span class="pill">VerticalAdjacency</span><span class="pill">Pose</span>
+      <span class="pill">AABB</span><span class="pill">Joint</span><span class="pill">IsGrasping</span>
+      <span class="pill">ObjectsInFOVOfRobot</span></p></div></div>
+    <div class="card"><div class="body"><h4>Extended — thermal · chemical · fabric · particle</h4>
+      <p style="margin-top:8px">
+      <span class="pill new">Cooked</span><span class="pill new">Burnt</span><span class="pill new">Frozen</span><span class="pill new">Heated</span>
+      <span class="pill new">Temperature</span><span class="pill new">MaxTemperature</span><span class="pill new">OnFire</span>
+      <span class="pill new">HeatSourceOrSink</span><span class="pill new">Saturated</span><span class="pill new">Sliceable</span>
+      <span class="pill new">SlicerActive</span><span class="pill new">Folded</span><span class="pill new">Unfolded</span><span class="pill new">Draped</span>
+      <span class="pill new">Covered</span><span class="pill new">Filled</span><span class="pill new">Contains</span><span class="pill new">ToggledOn</span>
+      <span class="pill new">Overlaid</span><span class="pill new">ParticleSource</span><span class="pill new">ParticleSink</span>
+      <span class="pill new">ParticleApplier</span><span class="pill new">ParticleRemover</span></p></div></div>
+  </div>
+</div></section>
+
+<!-- TRANSITIONS -->
+<section id="transitions"><div class="wrap">
+  <span class="sub">What makes the actions real</span>
+  <h2>Transition rules &amp; recipes</h2>
+  <p class="lead">Complex physical/chemical changes that Omniverse doesn't natively support are implemented as <b>transition rules</b> —
+  state machines that fire when preconditions hold (heat, contact, tool, container) and rewrite the scene (spawn slices, convert
+  fluids, produce a cooked dish). This is the machinery behind <code>CUT</code>, <code>SOAK</code>, and heating.
+  <span style="color:#cdd6e4">Source: <code>omnigibson/transition_rules.py</code> + <code>bddl/generated_data/transition_rule_recipes.json</code></span></p>
+  <table>
+    <tr><th>Rule family</th><th>Effect</th></tr>
+    <tr><td><code>SlicingRule</code> / <code>DicingRule</code></td><td>Knife + sliceable → spawn slices / diced particles</td></tr>
+    <tr><td><code>WasherRule</code> / <code>DryerRule</code></td><td>Remove/clean or dry covered particles &amp; saturation</td></tr>
+    <tr><td><code>MeltingRule</code></td><td>Heat a meltable object past threshold → molten fluid</td></tr>
+    <tr><td><code>CookingRule</code> · <code>CookingObjectRule</code> · <code>CookingSystemRule</code> · <code>CookingPhysicalParticleRule</code></td><td>Cook discrete objects, fluid systems, and particles</td></tr>
+    <tr><td><code>ToggleableMachineRule</code></td><td>A switched-on machine transforms its contents (blender, oven)</td></tr>
+    <tr><td><code>MixingToolRule</code> · <code>BlenderRule</code> (RecipeRule)</td><td>Recipe-based fluid/ingredient transforms (coffee, smoothie, soup…)</td></tr>
+  </table>
+  <p class="lead" style="margin-top:12px">Recipes are data-driven: e.g. <code>coffee_bean + water →(blender) drip_coffee</code>,
+  <code>cappuccino</code>, <code>lemonade</code>; cooking recipes for <code>sugar_cookies</code>, <code>pizza</code>,
+  <code>beef_stew</code>, <code>mac_and_cheese</code>. These are exactly the multi-step goals BEHAVIOR tasks ask the robot to achieve.</p>
+</div></section>
+
+<!-- ROBOTS -->
+<section id="robots"><div class="wrap">
+  <span class="sub">The agent</span>
+  <h2>Robots — 11 embodiments</h2>
+  <p class="lead">The agent is a robot (not a human avatar). We accept this: what matters is the <b>egocentric view</b> and that the
+  interactions are physical. Mobile manipulators carry an onboard head camera used for the egocentric stream.
+  <span style="color:#cdd6e4">Source: <code>omnigibson/robots/</code></span></p>
+  <table>
+    <tr><th>Robot</th><th>Base</th><th>Arms</th><th>Role</th></tr>
+    <tr><td><b>R1</b> / <b>R1Pro</b></td><td>Holonomic wheeled + trunk</td><td>2</td><td>Bimanual mobile manipulation (default for the challenge)</td></tr>
+    <tr><td><b>Tiago</b></td><td>Holonomic wheeled + trunk</td><td>2</td><td>Bimanual mobile manipulation, active head camera</td></tr>
+    <tr><td><b>Fetch</b></td><td>Differential drive + trunk</td><td>1</td><td>Single-arm mobile manipulation</td></tr>
+    <tr><td><b>Stretch</b></td><td>Differential drive</td><td>1</td><td>Hello-Robot telescoping arm</td></tr>
+    <tr><td><b>BehaviorRobot</b></td><td>Holonomic (virtual)</td><td>2</td><td>Virtual 5-finger hands for teleop / studies</td></tr>
+    <tr><td><b>FrankaPanda</b> · <b>A1</b></td><td>Fixed base</td><td>1</td><td>Tabletop manipulation (gripper / Allegro / Leap / Inspire hands)</td></tr>
+    <tr><td><b>Turtlebot</b> · <b>Freight</b> · <b>Husky</b> · <b>Locobot</b></td><td>Wheeled</td><td>0</td><td>Navigation-only platforms</td></tr>
+  </table>
+</div></section>
+
+<!-- SENSORS -->
+<section id="sensors"><div class="wrap">
+  <span class="sub">Observation</span>
+  <h2>Egocentric sensors — 13 vision modalities</h2>
+  <p class="lead">The robot's onboard <code>VisionSensor</code> can emit any of 13 modalities from the same egocentric viewpoint —
+  the policy's input, and the ground truth for evaluation. <span style="color:#cdd6e4">Source: <code>omnigibson/sensors/vision_sensor.py</code></span></p>
+  <p>
+    <span class="pill">rgb</span><span class="pill">depth</span><span class="pill">depth_linear</span><span class="pill">normal</span>
+    <span class="pill">seg_semantic</span><span class="pill">seg_instance</span><span class="pill">seg_instance_id</span>
+    <span class="pill">flow</span><span class="pill">bbox_2d_tight</span><span class="pill">bbox_2d_loose</span><span class="pill">bbox_3d</span>
+    <span class="pill">camera_params</span><span class="pill">pointcloud</span>
+  </p>
+</div></section>
+
+<!-- SCENES -->
+<section id="scenes"><div class="wrap">
+  <span class="sub">Worlds &amp; goals</span>
+  <h2>Scenes &amp; tasks</h2>
+  <div class="grid g2">
+    <div class="card"><div class="body"><h4>15 fully-interactive houses</h4>
+      <p style="margin-top:8px">7 home layouts, multiple instances each — every object articulated &amp; physically simulated.</p>
+      <p style="margin-top:8px">
+      <span class="pill">Rs_int</span><span class="pill">Beechwood_0/1_int</span><span class="pill">Benevolence_0/1/2_int</span>
+      <span class="pill">Ihlen_0/1_int</span><span class="pill">Merom_0/1_int</span><span class="pill">Pomaria_0/1/2_int</span>
+      <span class="pill">Wainscott_0/1_int</span></p></div></div>
+    <div class="card"><div class="body"><h4>1,018 BDDL activities</h4>
+      <p style="margin-top:8px">Each task is written in the <b>BEHAVIOR Domain Definition Language</b> (first-order logic): an
+      <code>:objects</code> list, an <code>:init</code> scene state, and a <code>:goal</code> of predicates to satisfy.</p>
+      <p style="margin-top:8px">e.g. <code>brewing_coffee</code> → goal <code>(and (real ?drip_coffee) (contains ?mug ?drip_coffee))</code>.
+      Tasks span cooking, cleaning, tidying, assembling — the everyday activities the benchmark scores.</p></div></div>
+  </div>
+  <div class="note">Continue to <a href="tasks.html"><b>the multi-step task space</b></a> for how tasks are structured and counted, and to
+  <a href="benchmark.html"><b>the benchmark episodes</b></a> for rendered egocentric rollouts with their action graphs.</div>
+</div></section>
+
+<footer>
+  BEHAVIOR-1K v3.7.2 capability reference · built on OmniGibson + NVIDIA Isaac Sim · part of the Interactive Online Policy Evaluation benchmark.<br>
+  Facts extracted from the v3.7.2 source; egocentric visuals rendered headless on an 8×H200 cluster.
+</footer>
+</body>
+</html>

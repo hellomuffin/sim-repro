@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>VirtualHome &amp; BEHAVIOR-1K — Egocentric Task Rendering (independent reproduction)</title>
+<style>
+  :root{--bg:#0f1115;--card:#191c23;--ink:#e8eaed;--mut:#9aa3b2;--acc:#6ea8fe;--acc2:#7ee787;--acc3:#ffa657;--line:#2a2f3a}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  a{color:var(--acc);text-decoration:none}
+  header{padding:66px 24px 40px;text-align:center;background:radial-gradient(1200px 420px at 50% -10%,#1d2330,transparent)}
+  header h1{font-size:2.4rem;margin:0 0 12px;letter-spacing:-.5px}
+  header p{color:var(--mut);max-width:820px;margin:8px auto;font-size:1.06rem}
+  .stat{display:inline-flex;gap:26px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+  .stat div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 20px}
+  .stat b{font-size:1.5rem;color:var(--acc2)} .stat span{display:block;color:var(--mut);font-size:.82rem}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  section{padding:50px 0;border-top:1px solid var(--line)}
+  h2{font-size:1.85rem;margin:0 0 6px}
+  .tag{display:inline-block;font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:10px}
+  .t-vh{background:#2a1a44;color:#c792ea} .t-bh{background:#3a2a16;color:var(--acc3)}
+  .lead{color:var(--mut);max-width:860px}
+  .grid{display:grid;gap:16px;margin-top:22px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}} @media(max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+  .card video,.card img{width:100%;display:block;background:#000;aspect-ratio:3/2;object-fit:cover}
+  .card .body{padding:12px 14px}
+  .card h3{margin:0 0 5px;font-size:1.0rem}
+  .card p{margin:0;color:var(--mut);font-size:.86rem}
+  .btn{display:inline-block;margin-top:14px;background:#222838;border:1px solid var(--line);border-radius:10px;padding:10px 18px;font-weight:700}
+  .note{background:#161a22;border-left:3px solid var(--acc3);padding:12px 16px;border-radius:6px;color:var(--mut);font-size:.9rem;margin-top:18px}
+  footer{padding:40px 24px;text-align:center;color:var(--mut);font-size:.85rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header>
+  <h1>VirtualHome &amp; BEHAVIOR-1K — Egocentric Task Rendering</h1>
+  <p>Two embodied household simulators for the <i>Interactive Online Policy Evaluation</i> benchmark, each showing an
+  agent doing multi-step tasks with an <b>egocentric view</b> and an <b>action scene graph</b>. Every video on this site
+  was rendered <b>headless on an 8×H200 cluster</b> — VirtualHome via Unity software-GL in Docker, BEHAVIOR-1K via
+  OmniGibson + Isaac Sim RTX.</p>
+  <div class="stat">
+    <div><b>2</b><span>simulators, isolated envs</span></div>
+    <div><b>77</b><span>videos, all rendered headless</span></div>
+    <div><b>18+19</b><span>benchmark episodes</span></div>
+  </div>
+  <div class="note" style="max-width:820px;margin:22px auto 0;text-align:left"><b>Independent reproduction.</b>
+  Every clip here was re-rendered from scratch on a freshly rebuilt cluster (rebuilt envs, re-cloned engines,
+  re-downloaded the 26&nbsp;GB BEHAVIOR dataset, rebuilt the VirtualHome Docker image) — no pre-existing video reused.</div>
+</header>
+
+<!-- ================= VIRTUALHOME ================= -->
+<section id="virtualhome"><div class="wrap">
+  <span class="tag t-vh">VIRTUALHOME 2.3.0</span>
+  <h2>VirtualHome — household activities via programs</h2>
+  <p class="lead">A Unity household simulator driven by symbolic programs <code>[Action] &lt;obj&gt; (id)</code>. An animated
+  human avatar executes multi-step activities; we render third-person + egocentric video and overlay an action scene
+  graph. <b>41 capability clips</b> + an <b>18-episode benchmark</b> (9 families × easy/hard).</p>
+  <div class="grid g4">
+    <div class="card"><video src="virtualhome/assets/ep_relocate_easy.mp4" autoplay muted loop playsinline></video><div class="body"><h3>Retrieve &amp; relocate</h3><p>walk → grab → walk → put</p></div></div>
+    <div class="card"><video src="virtualhome/assets/ep_settable_hard.mp4" autoplay muted loop playsinline></video><div class="body"><h3>Set the table (hard)</h3><p>multi-room, multi-object</p></div></div>
+    <div class="card"><video src="virtualhome/assets/act_open.mp4" autoplay muted loop playsinline></video><div class="body"><h3>Atomic action: Open</h3><p>walk to fridge → open</p></div></div>
+    <div class="card"><video src="virtualhome/assets/sensors_seg_class.mp4" autoplay muted loop playsinline></video><div class="body"><h3>Sensor modality</h3><p>class segmentation stream</p></div></div>
+  </div>
+  <a class="btn" href="virtualhome/" style="color:#c792ea">▶ VirtualHome capability reference &amp; benchmark →</a>
+</div></section>
+
+<!-- ================= BEHAVIOR ================= -->
+<section id="behavior"><div class="wrap">
+  <span class="tag t-bh">BEHAVIOR-1K v3.7.2</span>
+  <h2>BEHAVIOR-1K — egocentric robot manipulation</h2>
+  <p class="lead">A robot (Tiago) performs household activities on OmniGibson + NVIDIA Isaac Sim with photorealistic RTX
+  rendering. <b>14 symbolic action primitives</b>, 41 object states, 1000 BDDL activities. We render the egocentric
+  view of each primitive and task family with an action-graph overlay.</p>
+  <div class="grid g4">
+    <div class="card"><video src="behavior/assets/act_grasp.mp4" autoplay muted loop playsinline></video><div class="body"><h3>GRASP</h3><p>grasp the bottle</p></div></div>
+    <div class="card"><video src="behavior/assets/act_cut.mp4" autoplay muted loop playsinline></video><div class="body"><h3>CUT</h3><p>slice the apple</p></div></div>
+    <div class="card"><video src="behavior/assets/task_relocate.mp4" autoplay muted loop playsinline></video><div class="body"><h3>Task: relocate</h3><p>multi-step object move</p></div></div>
+    <div class="card"><video src="behavior/assets/task_store.mp4" autoplay muted loop playsinline></video><div class="body"><h3>Task: store</h3><p>open → place inside</p></div></div>
+  </div>
+  <a class="btn" href="behavior/" style="color:#ffa657">▶ BEHAVIOR-1K primitives &amp; benchmark →</a>
+</div></section>
+
+<footer>
+  Independent reproduction of the VirtualHome &amp; BEHAVIOR-1K egocentric-rendering benchmark.<br>
+  All visuals re-generated headless on an 8×H200 cluster from the task code in this repository.
+</footer>
+</body>
+</html>

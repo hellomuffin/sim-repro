@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>BEHAVIOR-1K — the multi-step task space</title>
+<style>
+  :root{--bg:#0e1015;--card:#181b22;--ink:#e8eaed;--mut:#98a2b3;--acc:#6ea8fe;--acc2:#7ee787;--acc3:#ffa657;--acc4:#c792ea;--line:#272c37}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  header{padding:60px 24px 32px;text-align:center;background:radial-gradient(1200px 440px at 50% -10%,#221a33,transparent)}
+  header h1{font-size:2.3rem;margin:0 0 10px;letter-spacing:-.5px}
+  header p{color:var(--mut);max-width:860px;margin:8px auto;font-size:1.04rem}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  nav{position:sticky;top:0;background:rgba(14,16,21,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10}
+  nav .wrap{display:flex;gap:18px;flex-wrap:wrap;padding:12px 24px}
+  nav a{color:var(--mut);font-weight:600;font-size:.93rem} nav a:hover{color:var(--ink);text-decoration:none}
+  section{padding:42px 0;border-top:1px solid var(--line)}
+  h2{font-size:1.7rem;margin:0 0 6px} h3{margin:22px 0 8px}
+  .sub{color:var(--acc4);font-weight:700;font-size:.78rem;letter-spacing:.09em;text-transform:uppercase}
+  .lead{color:var(--mut);max-width:880px}
+  .grid{display:grid;gap:16px;margin-top:16px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .card h4{margin:0 0 6px}
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.88rem}
+  th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--mut);font-weight:700}
+  code{background:#0b0d11;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.85em;color:#d7c4ff}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:9px;padding:13px;overflow:auto;font-size:.82rem;color:#cdd6e4;margin-top:12px}
+  .pill{display:inline-block;background:#0b0d11;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.78rem;margin:3px 3px 0 0;color:var(--acc2)}
+  .note{background:#15171f;border-left:3px solid var(--acc3);padding:12px 16px;border-radius:6px;color:var(--mut);font-size:.9rem;margin-top:16px}
+  .formula{background:#11131a;border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;font-size:1.05rem;margin-top:14px}
+  .formula b{color:var(--acc2)} .formula i{color:var(--acc4);font-style:normal}
+  footer{padding:38px 24px;text-align:center;color:var(--mut);font-size:.85rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header>
+  <span class="sub">BEHAVIOR-1K · task space</span>
+  <h1>The multi-step task space</h1>
+  <p>How a BEHAVIOR activity is defined, what makes one harder than another, and the families of action chains the robot can be
+  asked to perform — grounded in BEHAVIOR's physically-simulated state machine, not just symbolic flags.</p>
+  <p style="margin-top:14px;font-size:.92rem">
+    <a href="index.html">← capability reference</a> &nbsp;·&nbsp;
+    <a href="benchmark.html" style="color:#ffa657;font-weight:700">▸ Benchmark episodes →</a>
+  </p>
+</header>
+
+<nav><div class="wrap">
+  <a href="index.html">Reference</a>
+  <a href="#model">Generative model</a>
+  <a href="#bddl">BDDL anatomy</a>
+  <a href="#axes">Complexity axes</a>
+  <a href="#families">Chain families</a>
+  <a href="#count">Counting</a>
+  <a href="benchmark.html">Benchmark →</a>
+</div></nav>
+
+<section id="model" style="border-top:none"><div class="wrap">
+  <span class="sub">Generative model</span>
+  <h2>A task = scene × goal predicate, made true by an action chain</h2>
+  <p class="lead">A BEHAVIOR activity instantiates a <b>scene</b> (one of 15 interactive houses) populated with the activity's
+  <b>objects</b> in a sampled <b>initial state</b>, plus a <b>goal</b>: a first-order-logic predicate over object states. The robot
+  must execute a chain of action primitives that drives the world from <code>:init</code> to a state satisfying <code>:goal</code>.</p>
+  <div class="formula"><b>Task</b> &nbsp;=&nbsp; <i>Scene</i> &nbsp;×&nbsp; <i>Objects</i> &nbsp;×&nbsp; <i>Init state</i> &nbsp;×&nbsp; <i>Goal predicate</i><br>
+  <span style="color:#98a2b3;font-size:.85rem">solved by a chain of action primitives whose effects are validated by transition rules</span></div>
+  <p class="lead" style="margin-top:14px">Because effects are <b>physically simulated</b>, the goal predicate (e.g. "the mug <i>contains</i> drip-coffee", "the shirt is
+  <i>folded</i>", "the apple is <i>sliced</i> and <i>cooked</i>") can only be satisfied by genuinely producing that state — there is no
+  symbolic shortcut.</p>
+</div></section>
+
+<section id="bddl"><div class="wrap">
+  <span class="sub">Task definition language</span>
+  <h2>Anatomy of a BDDL activity</h2>
+  <p class="lead">Each of the 1,018 activities is a BDDL problem with three parts. Here is <code>brewing_coffee</code> (abridged):</p>
+<pre>(define (problem brewing_coffee)
+  (:objects
+     coffee_maker.n.01_1 - coffee_maker.n.01
+     coffee_bean.n.01_1  - coffee_bean.n.01
+     water.n.06_1        - water.n.06
+     mug.n.04_1          - mug.n.04
+     drip_coffee.n.01_1  - drip_coffee.n.01)
+  (:init
+     (inside coffee_bean.n.01_1 coffee_maker.n.01_1)
+     (filled coffee_maker.n.01_1 water.n.06_1)
+     (future drip_coffee.n.01_1)         ; product does not exist yet
+     (ontop mug.n.04_1 countertop.n.01_1))
+  (:goal
+     (and (real  drip_coffee.n.01_1)      ; the recipe must actually run
+          (contains mug.n.04_1 drip_coffee.n.01_1))))</pre>
+  <table>
+    <tr><th>Part</th><th>Meaning</th></tr>
+    <tr><td><code>:objects</code></td><td>Typed entities drawn from the WordNet-style BEHAVIOR object taxonomy</td></tr>
+    <tr><td><code>:init</code></td><td>Initial predicates (kinematic + extended states); <code>future</code> marks products not yet created</td></tr>
+    <tr><td><code>:goal</code></td><td>Conjunction/quantified predicates to satisfy; <code>real</code> requires a transition rule to have fired</td></tr>
+  </table>
+</div></section>
+
+<section id="axes"><div class="wrap">
+  <span class="sub">Difficulty</span>
+  <h2>Four complexity axes</h2>
+  <p class="lead">A BEHAVIOR episode's hardness is multi-dimensional — richer than a simple step count because state changes can be
+  physical/chemical, not just spatial.</p>
+  <div class="grid g2">
+    <div class="card"><h4>1 · Action-graph length</h4><p class="lead">Number of primitives in the solving chain (the edges of the
+      action scene graph). <code>grasp→place</code> = 2; a recipe with gather→fill→toggle→wait→pour can exceed 10.</p></div>
+    <div class="card"><h4>2 · Room / object complexity</h4><p class="lead">How many rooms the base must traverse and how many distinct
+      objects appear across the trajectory — the scene-scale the egocentric policy must parse.</p></div>
+    <div class="card"><h4>3 · State-change depth</h4><p class="lead">How many <i>extended</i> states must change (soaked, sliced, cooked,
+      folded…) and how many <b>transition rules</b> must fire. Physical changes are irreversible and harder to plan.</p></div>
+    <div class="card"><h4>4 · Manipulation difficulty</h4><p class="lead">Articulation (open fridge/drawer), bimanual handling, fluids
+      &amp; particles, and tool use (knife, sponge) — the low-level control burden under the primitive.</p></div>
+  </div>
+  <div class="note">On the <a href="benchmark.html">benchmark page</a> we label each episode with a <b>hardness score = number of edges in
+  its action scene graph</b>, and distinguish <b>easy vs hard</b> by rooms traversed and object complexity — the same scheme used
+  for VirtualHome, so the two simulators are directly comparable.</div>
+</div></section>
+
+<section id="families"><div class="wrap">
+  <span class="sub">Action chains</span>
+  <h2>Chain families — exploiting the rich action set</h2>
+  <p class="lead">Beyond the <code>open→grasp→place→close</code> chains a symbolic simulator allows, BEHAVIOR supports chains that pass
+  through <b>physical state machines</b>. These are the families our benchmark draws episodes from:</p>
+  <table>
+    <tr><th>Family</th><th>Primitive chain</th><th>State machine exercised</th></tr>
+    <tr><td><b>Relocate</b></td><td><code>navigate→grasp→place_on_top</code></td><td>kinematic (OnTop/Inside)</td></tr>
+    <tr><td><b>Store</b></td><td><code>open→grasp→place_inside→close</code></td><td>articulation + containment</td></tr>
+    <tr><td><b>Power / appliance</b></td><td><code>navigate→toggle_on→…→toggle_off</code></td><td>ToggledOn → machine rule</td></tr>
+    <tr><td><b>Cook / heat</b></td><td><code>grasp→place_near_heating_element→toggle_on</code></td><td>Temperature → Cooked/Burnt</td></tr>
+    <tr><td><b>Slice / cut</b></td><td><code>grasp(knife)→cut</code></td><td>Sliceable → SlicingRule (spawns slices)</td></tr>
+    <tr><td><b>Soak / wet</b></td><td><code>grasp→soak_under / soak_inside</code></td><td>Saturated (fluid particles)</td></tr>
+    <tr><td><b>Wipe / clean</b></td><td><code>grasp(rag)→soak→wipe</code></td><td>Saturated + Covered → ParticleRemover</td></tr>
+    <tr><td><b>Fill / pour</b></td><td><code>grasp→fill / place under source</code></td><td>Filled / Contains (fluids)</td></tr>
+    <tr><td><b>Recipe</b></td><td><code>gather→place_inside→toggle_on→(rule)→real</code></td><td>Blender/Cooking RecipeRule</td></tr>
+    <tr><td><b>Set / assemble</b></td><td><code>×N (grasp→place)</code></td><td>multiple OnTop goals</td></tr>
+  </table>
+  <p class="lead" style="margin-top:12px">The four families in bold — <b>cook</b>, <b>slice</b>, <b>soak/wipe</b>, <b>recipe</b> — are
+  uniquely enabled by BEHAVIOR's transition rules and have no symbolic-simulator equivalent.</p>
+</div></section>
+
+<section id="count"><div class="wrap">
+  <span class="sub">Scale</span>
+  <h2>How large is the task space</h2>
+  <div class="grid g3">
+    <div class="card"><h4 style="color:#7ee787">1,018</h4><p class="lead">curated BDDL activities (the named benchmark tasks)</p></div>
+    <div class="card"><h4 style="color:#7ee787">× 15</h4><p class="lead">interactive scenes × multiple object samplings per activity → many concrete instances each</p></div>
+    <div class="card"><h4 style="color:#7ee787">14<sup>L</sup></h4><p class="lead">action-primitive chains of length L — the combinatorial space a policy searches</p></div>
+  </div>
+  <p class="lead" style="margin-top:14px">The named 1,018 activities are a human-curated slice of a far larger generative space: any
+  reachable goal predicate over the 41 object states, instantiable in any of the 15 scenes with sampled object placements. The
+  benchmark fixes <i>activities</i> for comparability while the underlying space stays open-ended.</p>
+  <div class="note">Continue to the <a href="benchmark.html"><b>benchmark episodes</b></a>: rendered egocentric rollouts, one easy + one
+  hard per chain family, each with its action scene graph and a hardness score.</div>
+</div></section>
+
+<footer>
+  BEHAVIOR-1K v3.7.2 task-space analysis · Interactive Online Policy Evaluation benchmark.
+</footer>
+</body>
+</html>
